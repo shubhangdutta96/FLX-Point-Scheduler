@@ -1,0 +1,24 @@
+<configuration>
+
+    <!-- Define STDOUT appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Set root logger to use STDOUT -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <!-- Your service logs -->
+    <logger name="com.ebctech.web.control.service" level="INFO"/>
+
+    <!-- Suppress noisy logs -->
+    <logger name="slick" level="WARN"/>
+    <logger name="slick.jdbc" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="com.zaxxer.hikari.pool" level="WARN"/>
+
+</configuration>
