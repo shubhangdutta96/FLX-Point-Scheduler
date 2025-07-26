@@ -5,7 +5,6 @@ import com.ebctech.web.control.actor._
 import com.ebctech.web.control.sevice.DbProvider
 import org.slf4j.LoggerFactory
 import slick.jdbc.PostgresProfile.api._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.Success

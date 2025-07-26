@@ -40,12 +40,29 @@ object flxPointHandler {
     val savedOrderRequest = flxPointRecordEntity(req.orderNumber, "order_request", None, None, generatedOrderNumber, "")
     dbService.addOrderRequestToDB(savedOrderRequest)
 
+//    val resk = req.lineItems
+//    resk.foreach{ i =>
+//      i.partNumber
+//      val save = flxPointPartEntity(UUID.randomUUID().toString, req.orderNumber,generatedOrderNumber, i.partNumber, "", "")
+//      dbService.addOrderToDB(save)
+//    }
+
     val resk = req.lineItems.toList
-    resk.foreach{ i =>
-      i.partNumber
-      val save = flxPointPartEntity(UUID.randomUUID().toString, req.orderNumber,generatedOrderNumber, i.partNumber, "", "")
+
+    val saveFutures: List[Future[Int]] = resk.map { i =>
+      val save = flxPointPartEntity(UUID.randomUUID().toString, req.orderNumber, generatedOrderNumber, i.partNumber, "", "")
       dbService.addOrderToDB(save)
     }
+
+    val allSaves: Future[List[Int]] = Future.sequence(saveFutures)
+
+    allSaves.onComplete {
+      case Success(results) =>
+        println(s"All line items saved successfully. Rows affected: ${results.sum}")
+      case Failure(ex) =>
+        println(s"Failed to save line items: ${ex.getMessage}")
+    }
+
 
     // Update DB after API call
     val jsonContent =
